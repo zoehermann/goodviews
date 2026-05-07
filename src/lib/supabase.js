@@ -55,7 +55,7 @@ export const getReviewsForItem = (tmdbId) =>
   supabase.from('reviews').select('*, profiles(username, avatar_url)').eq('tmdb_id', tmdbId).order('updated_at', { ascending: false })
 
 export const getUserReview = (userId, tmdbId) =>
-  supabase.from('reviews').select('*').eq('user_id', userId).eq('tmdb_id', tmdbId).single()
+  supabase.from('reviews').select('*').eq('user_id', userId).eq('tmdb_id', tmdbId).maybeSingle()
 
 // ─── Social / friends ─────────────────────────────────────────────
 export const getFriendActivity = async (userId) => {
