@@ -58,10 +58,12 @@ export default function DetailPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    const fetch = type === 'movie' ? getMovie : getTVShow
-    fetch(id).then(setItem)
+    const fetchFn = type === 'movie' ? getMovie : getTVShow
+    fetchFn(id).then(setItem)
     if (user) {
-      getUserReview(user.id, id).then(({ data }) => setMyReview(data))
+      getUserReview(user.id, id).then(({ data, error }) => {
+        if (!error && data) setMyReview(data)
+      })
       getReviewsForItem(id).then(({ data }) => setReviews(data || []))
       getWatchlist(user.id).then(({ data }) => {
         const found = (data || []).find(i => String(i.tmdb_id) === String(id))
