@@ -96,10 +96,16 @@ export default function DetailPage() {
     setShowActions(false)
   }
 
-  const handleSaveReview = async (rating, text) => {
+const handleSaveReview = async (rating, text) => {
     if (!user) return
+    const itemData = {
+      id: Number(id),
+      media_type: type,
+      title: item.title || item.name,
+      poster_path: item.poster_path || null
+    }
+    await addToWatchlist(user.id, itemData, 'watched')
     await upsertReview(user.id, id, type, rating, text)
-    await addToWatchlist(user.id, { id, media_type: type, title: item.title || item.name, poster_path: item.poster_path }, 'watched')
     setStatus('watched')
     setMyReview({ rating, review_text: text })
     const { data } = await getReviewsForItem(id)
